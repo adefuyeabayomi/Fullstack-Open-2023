@@ -9,15 +9,15 @@ const CoursePart = function (props){
 const CourseContent = function (props) {
   return (
     <div>
-      <CoursePart part={props.part1} exercisesCount={props.exercises1} />
-      <CoursePart part={props.part2} exercisesCount={props.exercises2} />
-      <CoursePart part={props.part3} exercisesCount={props.exercises3} />
+      <CoursePart part={props.parts[0].name} exercisesCount={props.parts[0].exercises} />
+      <CoursePart part={props.parts[1].name} exercisesCount={props.parts[1].exercises}/>
+      <CoursePart part={props.parts[2].name} exercisesCount={props.parts[2].exercises}/>
     </div>
   )
 }
 const Total = function (props){
   return (
-    <p>Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}</p>
+    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
   )
 }
 
@@ -41,8 +41,8 @@ const App = () => {
   return (
     <div>
       <Header courseTitle={courseTitle} />
-      <CourseContent part1={parts[0].name} part2={parts[1].name} part3={parts[2].name} exercises1={parts[0].exercises} exercises2={parts[1].exercises} exercises3={parts[2].exercises} />
-      <Total exercises1={parts[0].exercises} exercises2={parts[1].exercises} exercises3={parts[2].exercises} />
+      <CourseContent parts={parts} />
+      <Total parts={parts} />
     </div>
   )
 }
