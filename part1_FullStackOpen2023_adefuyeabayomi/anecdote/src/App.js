@@ -32,13 +32,29 @@ const App = () => {
     console.log("current votes",currentVoteState)
     setVotes(currentVoteState);
   }
+  const popularAnecdote = () => {
+    let val;
+    let peak = -Infinity;
+    for(let each of Object.keys(votes)){
+      if(votes[each] > peak){
+        peak = votes[each]
+        val = each;
+      }
+    }
+    let result = anecdotes[val];
+    console.log("most votes and corresponding anecdote are :", val,"it has ",votes[val],result);
+    return result;
+  }
 
   return (
     <div>
+      <h3>Anecdote of the day!</h3>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes </p>
       <button onClick={()=> castVote()}>Vote</button>
       <button onClick={()=> getNext()}>Next Anecdote</button>
+      <h3>Anecdote with most vote</h3>
+      <p> {popularAnecdote()} </p>
     </div>
   )
 }
