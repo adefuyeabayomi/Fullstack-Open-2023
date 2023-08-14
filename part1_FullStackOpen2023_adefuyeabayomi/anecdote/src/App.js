@@ -13,14 +13,31 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes,setVotes] = useState({});
   function getNext () {
     return setSelected(Math.round(Math.random() * 7));
+  }
+  function castVote(){
+    let index = String(selected);
+    let currentVoteState = {...votes};
+    let newVoteState;
+    console.log(index,currentVoteState,newVoteState)
+    if(currentVoteState[index]){
+      newVoteState = currentVoteState[index] + 1;
+      currentVoteState[index] = newVoteState;
+    }
+    else {
+      currentVoteState[index] = 1;
+    }
+    console.log("current votes",currentVoteState)
+    setVotes(currentVoteState);
   }
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-
+      <p>has {votes[selected]} votes </p>
+      <button onClick={()=> castVote()}>Vote</button>
       <button onClick={()=> getNext()}>Next Anecdote</button>
     </div>
   )
