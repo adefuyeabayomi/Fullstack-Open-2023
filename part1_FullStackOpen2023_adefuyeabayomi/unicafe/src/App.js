@@ -7,31 +7,40 @@ const Button = (props) => {
 }
 
 const Statistics = (props) => {
+    let {good,bad,neutral} = props;
+    let total = good + bad + neutral;
   function average () { 
     // average is given by summation fx / summation f 
     // f are the values good, neutral, bad . Summation F is 3 
     // fx are the corresponding values of F 
     // Using this explanation, we implement the average as given below 
-    let {good,bad,neutral} = props;
     return (good + bad + neutral) / (3) ;
   }
   function positiveReviews () {
-    let {good,bad,neutral} = props;
-    let total = good + bad + neutral;
     return ( good / total ) * 100; 
   }  
-  return (
-    <div>
-      <h3>Statistics</h3>
-      <p>Good : {props.good}</p>
-      <p>Bad : {props.bad} </p>
-      <p>Neutral : {props.neutral} </p>
-      <p>Total Reviews : {props.good + props.bad + props.neutral} </p>
-      <p>Average : {average()}</p>
-      <p>Positive reviews : {positiveReviews()}%</p>
-    </div>
-  )
+  if (total > 0){
+    return (
+      <div>
+        <h3>Statistics</h3>
+        <p>Good : {props.good}</p>
+        <p>Bad : {props.bad} </p>
+        <p>Neutral : {props.neutral} </p>
+        <p>Total Reviews : {props.good + props.bad + props.neutral} </p>
+        <p>Average : {average()}</p>
+        <p>Positive reviews : {positiveReviews()}%</p>
+      </div>
+    )    
+  }
+  else {
+    return (
+      <div>
+        <p>No reviews given yet</p>
+      </div>
+    )
+  }
 }
+
 
 const App = () => {
   // save clicks of each button to its own state
