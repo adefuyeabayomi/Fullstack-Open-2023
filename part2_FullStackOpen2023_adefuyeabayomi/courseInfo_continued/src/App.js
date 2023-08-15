@@ -26,9 +26,9 @@ const Content = (props) => {
 }
 const Course = (props) => {
   let {id,name,parts} = props.course;
-  let exerciseCount = 0;
-  parts.forEach(x=> exerciseCount += x.exercises);
-console.log("parts in course",props)
+  let exerciseCount = parts.reduce((a,b)=>{ console.log("a",a,"b",b)
+  return a + b.exercises;
+  },0)
   return (
     <div>
       <Header courseTitle={name} />
