@@ -66,32 +66,54 @@ const App = () => {
       setNewName("");
       setNewNumber("")
     }
-
   }
-  return (
-    <div>
-      <h3>Search for someone</h3>
+  // components filter, inputs and people
+  const Filter = () => {
+    return (
       <div>
-        <input value={searchValue} onChange={handleSearch} />
+        <h3>Search for someone</h3>
+        <div>
+          <input value={searchValue} onChange={handleSearch} />
+        </div>
       </div>
-      <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>        <div>
-          Number: <input type="number" value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+    )
+  }
+  const PersonForm = () => {
+    return (
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            name: <input value={newName} onChange={handleNameChange} />
+          </div>        <div>
+            Number: <input type="number" value={newNumber} onChange={handleNumberChange} />
+          </div>
+          <div>
+            <button type="submit">add</button>
+          </div>
+        </form>
+      </div>
+    )
+  }
+
+  const Persons = () => {
+    return (
       <div>
         {filterUsers()}
       </div>
-      
+    )
+  }
+
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <Filter />
+      <h2>Phonebook</h2>
+      <PersonForm />
+      <h2>Numbers</h2>
+      <Persons />
     </div>
   )
+
 }
 
 export default App
