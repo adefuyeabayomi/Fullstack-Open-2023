@@ -3,7 +3,7 @@ const Header = (props) => {
 }
 
 const Total = (props) => {
-  return <p>Number of exercises {props.sumOfExercises}</p>
+  return <p><strong>Number of exercises {props.sumOfExercises}</strong></p>
 }
 
 const Part = (props) => {
@@ -26,11 +26,14 @@ const Content = (props) => {
 }
 const Course = (props) => {
   let {id,name,parts} = props.course;
+  let exerciseCount = 0;
+  parts.forEach(x=> exerciseCount += x.exercises);
 console.log("parts in course",props)
   return (
     <div>
       <Header courseTitle={name} />
       <Content parts={parts} />
+      <Total sumOfExercises={exerciseCount}/>
     </div>
   )
 }
