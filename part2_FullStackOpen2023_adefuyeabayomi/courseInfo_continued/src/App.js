@@ -1,3 +1,4 @@
+import Course from "./components/Course"
 const Header = (props) => {
   return <h1>{props.courseTitle}</h1>
 }
@@ -21,19 +22,6 @@ const Content = (props) => {
       {parts.map(x=>{
         return <Part part={x.name} key={x.id} exercises1={x.exercises} />
       })}
-    </div>
-  )
-}
-const Course = (props) => {
-  let {id,name,parts} = props.course;
-  let exerciseCount = parts.reduce((a,b)=>{ console.log("a",a,"b",b)
-  return a + b.exercises;
-  },0)
-  return (
-    <div>
-      <Header courseTitle={name} />
-      <Content parts={parts} />
-      <Total sumOfExercises={exerciseCount}/>
     </div>
   )
 }
