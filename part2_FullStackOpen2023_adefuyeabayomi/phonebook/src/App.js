@@ -13,8 +13,21 @@ const App = () => {
   function handleSubmit(eventObject) {
     console.log("in submithandler")
     eventObject.preventDefault();
-    setPersons(persons.concat({name : newName}))
-    setNewName("");
+    let userExist = false;
+    for (let each of persons){
+      if(each.name == newName){
+        userExist = true;
+        break;
+      }
+    }
+    if(userExist){
+      alert(`${newName} is already in the users list`)
+    }
+    else {
+      setPersons(persons.concat({name : newName}))
+      setNewName("");
+    }
+
   }
   return (
     <div>
