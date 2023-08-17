@@ -7,6 +7,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchValue,setSearchValue] = useState('');
   const [showNotification,setShowNotification] = useState(false);
+  const [notifType,setNotifType] = useState('');
   const [notificationText,setNotificationText] = useState('');
 
   const personsHook = () => {
@@ -57,20 +58,36 @@ const App = () => {
   function handleDelete(id){
     let sure = window.confirm("are you sure you want to delete this entry?");
     console.log("deleted: ",id,sure);
+    let newPersonsArray = [];
+    let deleted;
+    for (let each of persons){
+      let entry = {...each};
+      if(each.id !== id){
+        newPersonsArray.push(entry);
+      }
+      else{
+        deleted = entry;
+      }
+    }
     if(sure){
       utility.deleteEntry(id).then(response=>{
         console.log(response.data);
+        setNotificationText(deleted.name + " deleted successfully.");
+        setNotifType('success');
+        setShowNotification(true);
+        setTimeout(()=>{
+          setShowNotification(false);
+        },5000)
+      }).catch(err=>{
+        console.log("Error",err.message);
+        // error notification
+        setNotificationText(deleted.name + " has already been deleted");
+        setNotifType('error');
+        setShowNotification(true);
+        setTimeout(()=>{
+          setShowNotification(false);
+        },5000)
       })
-      let newPersonsArray = [];
-      let count = 0;
-      for (let each of persons){
-        let entry = {...each};
-        if(each.id !== id){
-          entry.id = count;
-          newPersonsArray.push(entry);
-          count++;
-        }
-      }
       setPersons(newPersonsArray)
     }
   }
@@ -106,12 +123,26 @@ const App = () => {
             }
           }
           setPersons(newPersonsArray)
-          setNotificationText(updatedEntry.name + " Updated in list.");
+          setNotificationText(newName + " Updated in list.");
           setShowNotification(true);
+          setNotifType('success')
           setTimeout(()=>{
             setShowNotification(false)
           },5000)
+          setNewName("");
+          setNewNumber("");
+        }).catch(err=>{
+          console.log("Error",err.message);
+          setNotificationText(newName + "  already been removed from the server");
+          setNotifType('error');
+          setShowNotification(true);
+          setTimeout(()=>{
+            setShowNotification(false);
+          },5000)
+          setNewName("");
+          setNewNumber("");
         })
+
       }
     }
     else {
@@ -120,6 +151,7 @@ const App = () => {
         console.log("submit response:",response.data);
         setPersons(persons.concat(newEntry))
         setNotificationText(newEntry.name + " Added to list.");
+        setNotifType('success');
         setShowNotification(true);
         setTimeout(()=>{
           setShowNotification(false)
@@ -169,16 +201,30 @@ const App = () => {
 
 
   const Notification = (props) => {
-    const notificationStyle = {
-      margin : 15,
-      borderWeight : 2,
-      borderStyle : 'solid',
-      borderRadius : 8,
-      borderColor : 'green',
-      backgroundColor: 'light-green',
-      color : 'green',
-      padding: '10px 15px'
-    };
+    let notificationStyle;
+    if(props.type === 'success'){
+      notificationStyle = {
+        margin : 15,
+        borderWeight : 2,
+        borderStyle : 'solid',
+        borderRadius : 8,
+        borderColor : 'green',
+        backgroundColor: '#85FF8D',
+        color : 'green',
+        padding: '10px 15px'
+      }
+    }
+    else{
+      notificationStyle = {
+        margin : 15,
+        borderWeight : 2,
+        borderStyle : 'solid',
+        borderRadius : 8,
+        backgroundColor: '#FF85B2',
+        color : '#FC4850',
+        padding: '10px 15px'
+      }
+    }
     if(!showNotification){
       return (
         <p></p>
@@ -194,7 +240,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification text={notificationText} />
+      <Notification type={notifType} text={notificationText} />
       <Filter />
       <h2>Phonebook</h2>
       <PersonForm />
