@@ -48,7 +48,7 @@ useEffect(()=>{
       toShowList = <p>Only One Match Found, Showing the result for <b>{countriesToShow[0].toUpperCase()}</b> </p>
     }
     else if(countriesToShow.length > 0 && countriesToShow.length <= 10){
-      toShowList = countriesToShow.map((x,i)=> <p key={i}>=&gt; {x} <button>show details</button></p>)
+      toShowList = countriesToShow.map((x,i)=> <p key={i}>=&gt; {x} <button onClick={()=>{changeActiveCountry(x)}}>show details</button></p>)
     }
     else if(countriesToShow.length>10){
       toShowList = <p>No of matches too much, please be more specific</p>
@@ -60,6 +60,9 @@ useEffect(()=>{
       </div>
     )
   }
+
+
+
   // effect to show active countries
   useEffect(()=>{
     if(countriesToShow.length === 1){
@@ -71,6 +74,12 @@ useEffect(()=>{
       setShowCountry(false)
     }
   },[countriesToShow])
+  // function to change active country
+  function changeActiveCountry (country) {
+      setActiveCountry(country);
+  }
+
+
   // effect to display details
   useEffect(()=>{
     console.log("just entered show details")
@@ -86,6 +95,8 @@ useEffect(()=>{
     setShowDetails(details);
     console.log("in show details, my details are",showDetails,)
   },[activeCountry])
+
+
   const Country = () => {
     console.log("show country in country render", showCountry)
     if(showCountry){
