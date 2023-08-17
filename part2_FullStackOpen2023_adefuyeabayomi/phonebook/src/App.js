@@ -34,7 +34,7 @@ const App = () => {
     let filterParam = searchValue.toLowerCase();
     if(searchValue === ''){
       return persons.map((x,i)=>{
-        return <p key={i}>{x.name} : {x.number}</p>
+        return <p key={i}>{x.name} : {x.number} <button onClick={()=>{handleDelete(x.id)}}>Delete {x.id} </button></p>
       })
     }
     else {
@@ -47,11 +47,31 @@ const App = () => {
         }
       })
       return filtered.map((x,i)=>{
-        return <p key={i}>{x.name} : {x.number}</p>
+        return <p key={i}>{x.name} : {x.number} <button onClick={()=>{handleDelete(x.id)}}>Delete {x.id} </button></p>
       })
     }
   }
 
+  function handleDelete(id){
+    let sure = window.confirm("are you sure you want to delete this entry?");
+    console.log("deleted: ",id,sure);
+    if(sure){
+      utility.deleteEntry(id).then(response=>{
+        console.log(response.data);
+      })
+      let newPersonsArray = [];
+      let count = 0;
+      for (let each of persons){
+        let entry = {...each};
+        if(each.id !== id){
+          entry.id = count;
+          newPersonsArray.push(entry);
+          count++;
+        }
+      }
+      setPersons(newPersonsArray)
+    }
+  }
 
   function handleSubmit(eventObject) {
     console.log("in submithandler")

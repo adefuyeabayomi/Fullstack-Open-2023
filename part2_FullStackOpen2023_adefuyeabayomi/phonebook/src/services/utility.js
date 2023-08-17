@@ -7,6 +7,9 @@ import axios from "axios";
     let request = axios.get("http://localhost:3001/persons");
     return request;
   }
-
-  export default {submitToServer,getAllPersons};
+  const deleteEntry = (id) => {
+    let request = axios.delete("http://localhost:3001/persons/"+id);
+    return request;
+  }
+  export default {submitToServer,getAllPersons,deleteEntry};
 
