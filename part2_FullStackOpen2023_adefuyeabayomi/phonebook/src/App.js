@@ -6,6 +6,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchValue,setSearchValue] = useState('');
+  const [showNotification,setShowNotification] = useState(false);
+  const [notificationText,setNotificationText] = useState('');
 
   const personsHook = () => {
     utility.getAllPersons().then(response=>{
@@ -95,7 +97,7 @@ const App = () => {
           let newPersonsArray = [];
           for (let each of persons){
             let entry = {...each};
-            if(each.name == newName){
+            if(each.name === newName){
               entry.number = newNumber;
               newPersonsArray.push(entry);
             }
@@ -104,6 +106,11 @@ const App = () => {
             }
           }
           setPersons(newPersonsArray)
+          setNotificationText(updatedEntry.name + " Updated in list.");
+          setShowNotification(true);
+          setTimeout(()=>{
+            setShowNotification(false)
+          },5000)
         })
       }
     }
@@ -112,8 +119,14 @@ const App = () => {
       utility.submitToServer(newEntry).then(response=>{
         console.log("submit response:",response.data);
         setPersons(persons.concat(newEntry))
+        setNotificationText(newEntry.name + " Added to list.");
+        setShowNotification(true);
+        setTimeout(()=>{
+          setShowNotification(false)
+        },5000)
         setNewName("");
         setNewNumber("");
+        console.log("newEntry", newEntry)
       });
     }
   }
@@ -153,9 +166,35 @@ const App = () => {
     )
   }
 
+
+
+  const Notification = (props) => {
+    const notificationStyle = {
+      margin : 15,
+      borderWeight : 2,
+      borderStyle : 'solid',
+      borderRadius : 8,
+      borderColor : 'green',
+      backgroundColor: 'light-green',
+      color : 'green',
+      padding: '10px 15px'
+    };
+    if(!showNotification){
+      return (
+        <p></p>
+      )
+    }
+    return (
+      <div style={notificationStyle}>
+        <p>{props.text}</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification text={notificationText} />
       <Filter />
       <h2>Phonebook</h2>
       <PersonForm />
