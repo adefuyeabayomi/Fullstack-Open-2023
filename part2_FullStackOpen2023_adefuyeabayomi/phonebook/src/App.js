@@ -1,5 +1,5 @@
 import { useEffect,useState } from 'react'
-import axios from "axios";
+import utility from "./services/utility"
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -8,10 +8,10 @@ const App = () => {
   const [searchValue,setSearchValue] = useState('');
 
   const personsHook = () => {
-    axios.get("http://localhost:3001/persons").then(response =>{
+    utility.getAllPersons().then(response=>{
       console.log("response body",response.data)
-      setPersons(response.data);
-      })
+      setPersons(response.data);      
+    })
   }
   useEffect(personsHook,[])
 
@@ -51,15 +51,7 @@ const App = () => {
       })
     }
   }
-  function submitToServer() {
-    let request = axios.post("http://localhost:3001/persons",{name : newName, number : newNumber})
-    request.then(response=>{
-      console.log("submit response:",response.data);
-      setPersons(persons.concat({name : newName, number : newNumber}))
-      setNewName("");
-      setNewNumber("");
-    })
-  }
+
 
   function handleSubmit(eventObject) {
     console.log("in submithandler")
@@ -75,7 +67,13 @@ const App = () => {
       alert(`${newName} is already in the users list`)
     }
     else {
-      submitToServer();
+      let newEntry = {name : newName, number : newNumber};
+      utility.submitToServer(newEntry).then(response=>{
+        console.log("submit response:",response.data);
+        setPersons(persons.concat(newEntry))
+        setNewName("");
+        setNewNumber("");
+      });
     }
   }
   // components filter, inputs and people
