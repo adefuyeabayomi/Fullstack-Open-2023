@@ -1,15 +1,19 @@
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
+import axios from "axios";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchValue,setSearchValue] = useState('');
+
+  const personsHook = () => {
+    axios.get("http://localhost:3001/persons").then(response =>{
+      console.log("response body",response.data)
+      setPersons(response.data);
+      })
+  }
+  useEffect(personsHook,[])
 
   function handleNameChange (eventObject) {
     setNewName(eventObject.target.value)
@@ -28,7 +32,7 @@ const App = () => {
   
   function filterUsers () {
     let filterParam = searchValue.toLowerCase();
-    if(searchValue == ''){
+    if(searchValue === ''){
       return persons.map((x,i)=>{
         return <p key={i}>{x.name} : {x.number}</p>
       })
@@ -47,13 +51,22 @@ const App = () => {
       })
     }
   }
+  function submitToServer() {
+    let request = axios.post("http://localhost:3001/persons",{name : newName, number : newNumber})
+    request.then(response=>{
+      console.log("submit response:",response.data);
+      setPersons(persons.concat({name : newName, number : newNumber}))
+      setNewName("");
+      setNewNumber("");
+    })
+  }
 
   function handleSubmit(eventObject) {
     console.log("in submithandler")
     eventObject.preventDefault();
     let userExist = false;
     for (let each of persons){
-      if(each.name == newName){
+      if(each.name === newName){
         userExist = true;
         break;
       }
@@ -62,9 +75,7 @@ const App = () => {
       alert(`${newName} is already in the users list`)
     }
     else {
-      setPersons(persons.concat({name : newName, number : newNumber}))
-      setNewName("");
-      setNewNumber("")
+      submitToServer();
     }
   }
   // components filter, inputs and people
