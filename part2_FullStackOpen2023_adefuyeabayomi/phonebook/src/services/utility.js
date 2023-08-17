@@ -11,5 +11,9 @@ import axios from "axios";
     let request = axios.delete("http://localhost:3001/persons/"+id);
     return request;
   }
-  export default {submitToServer,getAllPersons,deleteEntry};
+  const updateEntry = (id,updatedEntry) => {
+    let request = axios.put("http://localhost:3001/persons/"+id,updatedEntry)
+    return request;
+  }
+  export default {submitToServer,getAllPersons,deleteEntry,updateEntry};
 

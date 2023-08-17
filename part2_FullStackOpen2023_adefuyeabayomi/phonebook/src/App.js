@@ -77,14 +77,35 @@ const App = () => {
     console.log("in submithandler")
     eventObject.preventDefault();
     let userExist = false;
+    let userId = undefined;
     for (let each of persons){
       if(each.name === newName){
         userExist = true;
+        userId = each.id;
         break;
       }
     }
     if(userExist){
-      alert(`${newName} is already in the users list`)
+      let sure = window.confirm("This user exists in the database. Click Ok to update the user's phone number");
+      console.log("updated: ",userId,sure);
+      if(sure){
+        let updatedEntry = {name : newName, number : newNumber}
+        utility.updateEntry(userId,updatedEntry).then(response=>{
+          console.log("response.data");
+          let newPersonsArray = [];
+          for (let each of persons){
+            let entry = {...each};
+            if(each.name == newName){
+              entry.number = newNumber;
+              newPersonsArray.push(entry);
+            }
+            else{
+              newPersonsArray.push(entry);
+            }
+          }
+          setPersons(newPersonsArray)
+        })
+      }
     }
     else {
       let newEntry = {name : newName, number : newNumber};
