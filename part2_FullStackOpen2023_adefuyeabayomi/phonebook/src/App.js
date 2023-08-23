@@ -20,17 +20,14 @@ const App = () => {
 
   function handleNameChange (eventObject) {
     setNewName(eventObject.target.value)
-    console.log("event.target.value",eventObject.target.value)
   }
 
   function handleNumberChange (eventObject) {
     setNewNumber(eventObject.target.value)
-    console.log("event.target.value",eventObject.target.value)
   }
 
   function handleSearch (eventObject){
-    setSearchValue(eventObject.target.value)
-    console.log("event.target.value",eventObject.target.value)    
+    setSearchValue(eventObject.target.value) 
   }
   
   function filterUsers () {
@@ -44,7 +41,6 @@ const App = () => {
       let filtered = [];
       persons.forEach(x=>{
         let present = x.name.toLowerCase().indexOf(filterParam) > -1;
-        console.log("value",x.name,present)
         if(present){
           filtered.push(x);
         }
@@ -142,7 +138,6 @@ const App = () => {
           setNewName("");
           setNewNumber("");
         })
-
       }
     }
     else {
